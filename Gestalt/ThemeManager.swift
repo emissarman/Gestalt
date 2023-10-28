@@ -268,14 +268,12 @@ public class ThemeManager {
             // HACK: apparently the only way to
             // change the appearance of existing instances:
             if let sharedApplication = self?.optionalSharedApplication {
-                let classNames: [String]? = self?.allowedWindowClasses?.map({ NSStringFromClass($0) })
-
                 for window in sharedApplication.windows {
-                    guard classNames?.contains(NSStringFromClass(window.classForCoder)) ?? true else { return }
-
                     for view in window.subviews {
-                        view.removeFromSuperview()
-                        window.addSubview(view)
+                        if String(describing: window.classForCoder) != "UITextEffectsWindow" {
+                            view.removeFromSuperview()
+                            window.addSubview(view)
+                        }
                     }
                 }
             }
